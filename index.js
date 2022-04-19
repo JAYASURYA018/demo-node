@@ -1,4 +1,4 @@
-const express = require("express");
+// const express = require("express");
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
@@ -14,7 +14,7 @@ const movies = [
     summary:
       "With the world now aware that he is Iron Man, billionaire inventor Tony Stark (Robert Downey Jr.) faces pressure from all sides to share his technology with the military. He is reluctant to divulge the secrets of his armored suit, fearing the information will fall into the wrong hands. With Pepper Potts (Gwyneth Paltrow) and Rhodes (Don Cheadle) by his side, Tony must forge new alliances and confront a powerful new enemy.",
     trailer: "https://www.youtube.com/embed/wKtcmiifycU",
-  },
+  },  
   {
     id: "101",
     name: "No Country for Old Men",
@@ -74,7 +74,6 @@ const movies = [
     trailer: "https://www.youtube.com/embed/NgsQ8mVkN8w",
   },
 ];
-
 
 dotenv.config();
 console.log(process.env);
