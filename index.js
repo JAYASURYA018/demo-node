@@ -100,14 +100,14 @@ app.get("/", function (req, res) {
 });
 
 app.get("/movies", async function (req, res) {
-  const mov = await client.db("b30").collection("movies").find({}).toArray();
+  const mov = await client.db("newdb").collection("movies").find({}).toArray();
   console.log(mov);
   res.send(mov);
 });
 
 app.get("/movies/:id", async function (req, res) {
   const { id } = req.params;
-  const movie = await client.db("b30").collection("movies").findOne({ id });
+  const movie = await client.db("newdb").collection("movies").findOne({ id });
   //   const movie = movies.find((mv) => mv.id === id);
   movie ? res.send(movie) : res.status(404).send("Data not found!");
 });
@@ -115,7 +115,7 @@ app.get("/movies/:id", async function (req, res) {
 app.delete("/movies/:id", async function (req, res) {
   const { id } = req.params;
   const result = await client
-    .db("b30")
+    .db("newdb")
     .collection("movies")
     .deleteOne({ id: id });
   //   const movie = movies.find((mv) => mv.id === id);
@@ -126,7 +126,7 @@ app.put("/movies/:id", async function (req, res) {
   const { id } = req.params;
   const update = req.body;
   const result = await client
-    .db("b30")
+    .db("newdb")
     .collection("movies")
     .updateOne({ id: id }, { $set: update });
   //   const movie = movies.find((mv) => mv.id === id);
@@ -136,7 +136,7 @@ app.put("/movies/:id", async function (req, res) {
 app.post("/movies", async function (req, res) {
   const data = req.body;
   console.log(data);
-  const result = await client.db("b30").collection("movies").insertMany(data);
+  const result = await client.db("newdb").collection("movies").insertMany(data);
   res.send(result);
 });
 
