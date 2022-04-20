@@ -2,6 +2,7 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import { getmovies ,updatemoviesbyid,deletemoviesbyid,getmoviesbyid,createmovies} from "./helper.js";
 const app = express();
 
 const movies = [
@@ -88,7 +89,7 @@ async function createConnection() {
   console.log("Mongo is connected ✌️😊");
   return client;
 }
-const client = await createConnection();
+export const client = await createConnection();
 
 app.get("/check", function (req, res) {
   res.send("failed");
@@ -99,24 +100,21 @@ app.get("/", function (req, res) {
 });
 
 app.get("/movies", async function (req, res) {
-  const mov = await client.db("newdb").collection("movies").find({}).toArray();
+  const mov = await getmovies();
   console.log(mov);
   res.send(mov);
 });
 
 app.get("/movies/:id", async function (req, res) {
   const { id } = req.params;
-  const movie = await client.db("newdb").collection("movies").findOne({ id });
+  const movie = await getmoviesbyid(id);
   //   const movie = movies.find((mv) => mv.id === id);
   movie ? res.send(movie) : res.status(404).send("Data not found!");
 });
 
 app.delete("/movies/:id", async function (req, res) {
   const { id } = req.params;
-  const result = await client
-    .db("newdb")
-    .collection("movies")
-    .deleteOne({ id: id });
+  const result = await deletemoviesbyid(id);
   //   const movie = movies.find((mv) => mv.id === id);
   res.send(result);
 });
@@ -124,10 +122,7 @@ app.delete("/movies/:id", async function (req, res) {
 app.put("/movies/:id", async function (req, res) {
   const { id } = req.params;
   const update = req.body;
-  const result = await client
-    .db("newdb")
-    .collection("movies")
-    .updateOne({ id: id }, { $set: update });
+  const result = await updatemoviesbyid(id, update);
   //   const movie = movies.find((mv) => mv.id === id);
   res.send(result);
 });
@@ -135,8 +130,9 @@ app.put("/movies/:id", async function (req, res) {
 app.post("/movies", async function (req, res) {
   const data = req.body;
   console.log(data);
-  const result = await client.db("newdb").collection("movies").insertMany(data);
+  const result = await createmovies(data);
   res.send(result);
 });
 
 app.listen(PORT, () => console.log("sever started"));
+
